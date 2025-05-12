@@ -14,7 +14,7 @@ Welcome to the **AI Scheme Predictor**, an intelligent web application that help
 - [🧑‍🤝‍🧑 Contributing](#contributing)
 - [🔒 License](#license)
 - [📑 Technologies Used](#technologies-used)
-- [📧 Contact](#contact)
+
 
 ---
 
