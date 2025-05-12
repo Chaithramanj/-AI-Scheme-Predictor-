@@ -1,0 +1,77 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #961ec6, #1a001f);
+    color: rgb(228, 239, 230);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.container {
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 30px 40px;
+    border-radius: 20px;
+    box-shadow: 0 0 25px rgba(255, 0, 255, 0.2);
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+}
+
+h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #ffccff;
+    text-shadow: 0 0 10px #ff00ff;
+}
+
+label {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: block;
+    color: #ffddff;
+}
+
+textarea {
+    width: 100%;
+    padding: 15px;
+    border-radius: 10px;
+    border: none;
+    resize: none;
+    font-size: 1em;
+    background-color: #1a001f;
+    color: white;
+    margin-bottom: 20px;
+}
+
+input[type="submit"] {
+    background-color: #a020f0;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    color: white;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #bf40bf;
+}
+
+.output {
+    margin-top: 30px;
+    padding: 15px;
+    background-color: #330044;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #ff00ff;
+}
+
+.output h2 {
+    margin-bottom: 10px;
+    color: #ffb3ff;
+}

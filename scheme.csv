@@ -1,0 +1,10 @@
+Code,Description,OrgCode,Parent,Stage,MonitoringCode
+1,Girl child benefits,Sukanya Samriddhi Yojana,,1,0506
+2,Unorganized sectors,Atal Pension Yojana,1,2,0506
+3,Women  benefits,PMAY,1,2,0102
+4,Non corporates,PMMY,1,2,0506
+5,Health assurance,Ayushman Bharat Scheme,1,2,0506
+6,Rural Develpment,MGNREGA,1,2,2101
+7,Others,PMGSY,1,2,1799
+9,Call Drop,better,2,3,0506
+10,Improper Network Coverage,good,2,3,0506

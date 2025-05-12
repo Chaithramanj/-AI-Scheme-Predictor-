@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🌿 AI Scheme Predictor</title>
+  <style>
+    /* Nature-themed animated gradient background */
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(120deg, #e0f7e9, #c0f2d8, #a8e6cf, #dcedc1);
+      background-size: 300% 300%;
+      animation: bgFlow 15s ease infinite;
+      color: #2d3436;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @keyframes bgFlow {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
+    h1 {
+      font-size: 3rem;
+      color: #2e7d32;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .box {
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 20px;
+      padding: 2rem;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 10px 30px rgba(76, 175, 80, 0.3);
+      text-align: center;
+    }
+
+    textarea {
+      width: 100%;
+      height: 120px;
+      padding: 1rem;
+      font-size: 1rem;
+      border-radius: 12px;
+      border: 1px solid #a5d6a7;
+      resize: none;
+      outline: none;
+      background: #f0fff4;
+      color: #2d3436;
+    }
+
+    textarea::placeholder {
+      color: #81c784;
+    }
+
+    button {
+      margin-top: 1rem;
+      padding: 0.8rem 2rem;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      background: #66bb6a;
+      color: white;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(102, 187, 106, 0.4);
+    }
+
+    button:hover {
+      background: #388e3c;
+      transform: scale(1.05);
+    }
+
+    #result, #url-status {
+      margin-top: 1.5rem;
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #1b5e20;
+    }
+
+    #scheme-link {
+      display: inline-block;
+      margin-top: 1rem;
+      font-weight: bold;
+      text-decoration: underline;
+      color: #2e7d32;
+      transition: color 0.3s ease;
+    }
+
+    #scheme-link:hover {
+      color: #43a047;
+    }
+
+    .valid-url {
+      color: #2e7d32;
+    }
+
+    .invalid-url {
+      color: #c62828;
+    }
+  </style>
+</head>
+<body>
+  <h1>🌿 AI Scheme Predictor</h1>
+  <div class="box">
+    <form id="predict-form">
+      <textarea name="description" id="description" placeholder="Describe your problem or situation..."></textarea><br/>
+      <button type="button" id="voice-btn">🎙 Speak</button>
+      <button type="submit">🌱 Get Scheme</button>
+    </form>
+
+    <div id="result"></div>
+    <div id="url-status"></div>
+  </div>
+
+  <script>
+    function typeText(text, containerId, callback) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = "";
+      let i = 0;
+      const speed = 40;
+
+      function type() {
+        if (i < text.length) {
+          container.innerHTML += `<strong>${text.charAt(i)}</strong>`;
+          i++;
+          setTimeout(type, speed);
+        } else if (callback) {
+          callback();
+        }
+      }
+
+      type();
+    }
+
+    function validateURL(url) {
+      const govDomains = ['.gov', '.gov.in', '.nic.in', '.gov.uk'];
+      return govDomains.some(domain => url.includes(domain)) ? 'valid-url' : 'invalid-url';
+    }
+
+    function checkURL(url) {
+      const status = validateURL(url);
+      const msg = status === 'valid-url'
+        ? "✅ This is a real and secure government website."
+        : "⚠️ This might be a fake or unofficial website.";
+      const statusDiv = document.getElementById("url-status");
+      statusDiv.className = status;
+      statusDiv.innerText = msg;
+    }
+
+    document.getElementById('predict-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+
+      const response = await fetch("/", {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await response.json();
+      const schemeName = data.scheme;
+      const schemeUrl = data.url;
+
+      const speakMsg = new SpeechSynthesisUtterance(`The recommended scheme for your case is ${schemeName}`);
+      window.speechSynthesis.speak(speakMsg);
+
+      typeText(`🌿 Recommended Scheme: ${schemeName}`, "result", () => {
+        if (schemeUrl && schemeUrl !== "#") {
+          const linkHTML = `<div><a id="scheme-link" href="${schemeUrl}" target="_blank" onclick="checkURL('${schemeUrl}')">🔗 Click here to know more</a></div>`;
+          document.getElementById("result").innerHTML += linkHTML;
+        }
+      });
+    });
+
+    // ✅ Voice Input Support
+    const voiceBtn = document.getElementById("voice-btn");
+    const descInput = document.getElementById("description");
+
+    voiceBtn.addEventListener("click", () => {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        alert("Speech recognition is not supported in your browser. Please use Chrome.");
+        return;
+      }
+
+      const recognition = new SpeechRecognition();
+      recognition.lang = "en-US";
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      voiceBtn.textContent = "🎙 Listening...";
+      voiceBtn.disabled = true;
+
+      recognition.start();
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        descInput.value = transcript;
+        voiceBtn.textContent = "🎙 Speak";
+        voiceBtn.disabled = false;
+      };
+
+      recognition.onerror = (event) => {
+        alert("Speech recognition error: " + event.error);
+        voiceBtn.textContent = "🎙 Speak";
+        voiceBtn.disabled = false;
+      };
+
+      recognition.onend = () => {
+        voiceBtn.textContent = "🎙 Speak";
+        voiceBtn.disabled = false;
+      };
+    });
+  </script>
+</body>
+</html>
