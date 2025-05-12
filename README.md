@@ -43,3 +43,7 @@ To run the **AI Scheme Predictor** locally, follow these simple steps:
 First, clone the repository to your local machine:
 ```bash
 git clone https://github.com/Chaithramanj/-AI-Scheme-Predictor-.git
+
+***output***
+![WhatsApp Image 2025-05-12 at 20 37 42_a9c37e9f](https://github.com/user-attachments/assets/fc27f91d-c529-4b32-a37c-db5279faaeb5)
+
